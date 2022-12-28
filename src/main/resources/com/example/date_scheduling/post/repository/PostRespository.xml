@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.date_scheduling.post.repository.PostRepository">
+
+    <insert id="save">
+        INSERT INTO tbl_post
+        (postId, userId, title, content, image, cID)
+        VALUES
+        (#{postId}, #{userId}, #{title}, #{content}, #{image}, #{cID})
+    </insert>
+
+    <delete id="remove">
+        DELETE FROM tbl_post
+        WHERE postId=#{postId}
+    </delete>
+
+    <select id="findAll" resultType="com.example.date_scheduling.post.entity.Post">
+        SELECT *
+        FROM tbl_post
+        ORDER BY regDate
+    </select>
+
+    <select id="findAllMyReviews" resultType="com.example.date_scheduling.post.entity.Post">
+        SELECT postId, userId, title, content, image, regDate, cID
+        FROM tbl_post
+        WHERE userId=#{username}
+        ORDER BY regDate
+    </select>
+
+    <select id="findOne" resultType="com.example.date_scheduling.post.entity.Post">
+        SELECT postId, userId, title, content, image, regDate, cID
+        FROM tbl_post
+        WHERE postId=#{postId}
+    </select>
+
+
+    <update id="modify">
+        UPDATE tbl_post
+        SET title=#{title}, content=#{content}, image=#{image}
+        WHERE postId=#{postId}
+    </update>
+
+</mapper>

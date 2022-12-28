@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.date_scheduling.post.repository.CategoryRepository">
+    <select id="findAreaList" resultType="com.example.date_scheduling.post.entity.Category">
+        SELECT area
+        FROM tbl_category
+        GROUP BY area
+    </select>
+
+    <select id="showArea" resultType="com.example.date_scheduling.post.entity.Category">
+        SELECT area
+        FROM tbl_category
+        GROUP BY area
+        HAVING area=#{area}
+    </select>
+
+    <select id="findAddressList" resultType="com.example.date_scheduling.post.entity.Category">
+        SELECT address
+        FROM tbl_category
+        WHERE area=#{area}
+    </select>
+
+    <select id="findCategory" resultType="com.example.date_scheduling.post.entity.Category">
+        SELECT cID, area, address
+        FROM tbl_category
+        WHERE address=#{address}
+    </select>
+
+    <select id="findCategoryByCID" resultType="com.example.date_scheduling.post.entity.Category">
+        SELECT cID, area, address
+        FROM tbl_category
+        WHERE cID=#{cID}
+    </select>
+</mapper>
