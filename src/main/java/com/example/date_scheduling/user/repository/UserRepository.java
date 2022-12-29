@@ -18,6 +18,9 @@ public interface UserRepository {
     //이메일 주소가 중복인지 조회하기
     boolean existByEmail(String email);
 
+    //닉네임이 중복인지 조회하기
+    boolean existByUsername(String username);
+
     //회원 가입하기
     boolean register(UserEntity entity);
 }

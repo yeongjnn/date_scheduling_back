@@ -58,5 +58,8 @@ public class UserService {
     public boolean loginIdDuplicate(String loginId){
         return userRepository.existByLoginId(loginId);
     }
+    // 닉네임 중복 검증
+    public boolean usernameDuplicate(String username) {return userRepository.existByUsername(username); }
+
 }
 

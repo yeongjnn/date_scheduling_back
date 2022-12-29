@@ -1,6 +1,7 @@
 package com.example.date_scheduling.post.api;
 
 import com.example.date_scheduling.error.ErrorDTO;
+import com.example.date_scheduling.post.dto.CategoryDto;
 import com.example.date_scheduling.post.dto.FindAllPostDto;
 import com.example.date_scheduling.post.dto.PostDto;
 import com.example.date_scheduling.post.dto.RequestPostDto;
@@ -39,7 +40,7 @@ public class PostApiController {
     // <<리뷰 작성 페이지>>
     //리뷰 작성 페이지를 들어가면 먼저 지역 목록들을 보여준다
     @GetMapping("/new")
-    public List<Category> areas(){
+    public CategoryDto areas(){
         log.info("/api/posts/new GET category request");
 
         return categoryService.findAreaServ();
@@ -47,7 +48,7 @@ public class PostApiController {
 
     //지역 하나를 선택하면 해당하는 주소(구)들을 보여준다.
     @GetMapping(value = "/new/{area}", produces = "application/json; charset=UTF-8")
-    public List<Category> addresses(@PathVariable String area){
+    public CategoryDto addresses(@PathVariable String area){
         log.info("/api/posts/new/{} GET request", area);
 
         return categoryService.findAddressServ(area);
@@ -93,7 +94,7 @@ public class PostApiController {
     // <<메인 페이지에서 카테고리를 통해 리뷰들 검색>>
     //지역 버튼을 클릭하면 지역 리스트를 불러온다(서울, 부산)
     @GetMapping("/search")
-    public List<Category> areaSearch(){
+    public CategoryDto areaSearch(){
         log.info("/api/posts/search GET category request");
 
         return categoryService.findAreaServ();
@@ -101,7 +102,7 @@ public class PostApiController {
 
     //지역 하나를 선택하면 해당하는 주소(구)들을 보여준다.
     @GetMapping(value = "/search/{area}", produces = "application/json; charset=UTF-8")
-    public List<Category> addresseSearch(@PathVariable String area){
+    public CategoryDto addresseSearch(@PathVariable String area){
         log.info("/api/posts/search/{} GET request", area);
 
         return categoryService.findAddressServ(area);

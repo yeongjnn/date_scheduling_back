@@ -70,6 +70,14 @@ public class UserController {
         return ResponseEntity.ok().body(flag2);
     }
 
+    //닉네임 중복처리
+    @GetMapping("/checkusername")
+    public ResponseEntity<?> checkUsername(String username){
+        boolean flag3 = userService.usernameDuplicate(username);
+        log.info("{} 중복여부 - {}", username, flag3);
+        return ResponseEntity.ok().body(flag3);
+    }
+
 
 
 

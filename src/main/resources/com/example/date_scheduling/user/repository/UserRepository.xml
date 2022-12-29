@@ -24,9 +24,15 @@
     </select>
 
     <select id = "existByEmail" resultType="boolean">
-        select Count(*)
+        select count(*)
         from tbl_user
         where email = #{email}
+    </select>
+
+    <select id = "existByUsername" resultType="boolean">
+        select count(*)
+        from tbl_user
+        where username = #{username}
     </select>
 
     <insert id = "register">
