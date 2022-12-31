@@ -5,6 +5,7 @@ import com.example.date_scheduling.post.dto.PostDto;
 import com.example.date_scheduling.post.dto.RequestPostDto;
 import com.example.date_scheduling.post.entity.Category;
 import com.example.date_scheduling.post.entity.Post;
+import com.example.date_scheduling.post.repository.MyLikeRepository;
 import com.example.date_scheduling.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository repository;
+    private final MyLikeRepository myLikeRepository;
 
     private final CategoryService categoryService;
 
@@ -83,6 +85,18 @@ public class PostService {
     public FindAllPostDto update(Post post) {
         boolean flag = repository.modify(post);
         return flag ? findAllMyReviewsServ(post.getUserId()) : new FindAllPostDto();
+    }
+
+
+    ///////////////////////////////////////////
+    //좋아요 기능 (추가)
+    public boolean addLikeServ(String postId, String username){
+        return myLikeRepository.addLike(postId, username);
+    }
+
+    // 마이라이크 페이지에서 좋아요한 리뷰 목록 조회 중간처리
+    public FindAllPostDto findAllMyLikesServ(String userId){
+        return new FindAllPostDto(repository.findAllMyReviews(userId));
     }
 
 }
