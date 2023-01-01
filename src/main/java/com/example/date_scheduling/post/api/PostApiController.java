@@ -8,6 +8,7 @@ import com.example.date_scheduling.post.dto.RequestPostDto;
 import com.example.date_scheduling.post.entity.Category;
 import com.example.date_scheduling.post.entity.Post;
 import com.example.date_scheduling.post.service.CategoryService;
+import com.example.date_scheduling.post.service.MyLikeService;
 import com.example.date_scheduling.post.service.PostService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class PostApiController {
 
     private final PostService service;
     private final CategoryService categoryService;
+    private final MyLikeService myLikeService;
 
     //메인페이지에서 보여줄 리뷰 목록과 마이페이지에서 보여줄 리뷰 목록 나누기
     // 게시물 목록 전체 조회 요청
@@ -186,7 +188,7 @@ public class PostApiController {
     // 게시글 좋아요 기능(추가)
     @PostMapping("/{postId}")
     public ResponseEntity<?> addLike(@PathVariable String postId, @AuthenticationPrincipal String username){
-        boolean flag = service.addLikeServ(postId, username);
+        boolean flag = myLikeService.addLikeServ(postId, username);
         log.info("{} 좋아요 추가 - {}", postId, username);
         return ResponseEntity.ok().body(flag);
     }
@@ -199,5 +201,17 @@ public class PostApiController {
         return service.findAllMyLikesServ(username);
     }
 
+    //좋아요한 게시글 삭제
+    @DeleteMapping("/mylike/{postId}")
+    public ResponseEntity<?> deleteMyLike(@AuthenticationPrincipal String username, @PathVariable String postId){
+        log.info("/api/posts/mylike/{} DELETE request", postId);
+
+        try {
+            FindAllPostDto dtos = service.deleteMyLikeServ(username, postId);
+            return ResponseEntity.ok().body(dtos);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

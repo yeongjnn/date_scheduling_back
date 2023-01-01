@@ -14,6 +14,6 @@ public interface MyLikeRepository {
     List<String> findAllPostId(String username);
 
     //좋아요한 게시글 삭제
-    boolean removeLike(String postId);
+    boolean removeMyLike(String username, String postId);
 
 }
