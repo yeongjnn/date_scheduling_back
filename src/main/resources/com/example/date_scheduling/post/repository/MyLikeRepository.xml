@@ -5,9 +5,24 @@
 
 <mapper namespace="com.example.date_scheduling.post.repository.MyLikeRepository">
     <insert id="addLike">
-        INSERT INTO tbl_test
+        INSERT INTO tbl_mylike
         (postId, username)
         VALUES
         (#{postId}, #{username})
     </insert>
+
+    <select id="findAllPostId" resultType="String">
+        SELECT postId
+        FROM tbl_mylike
+        WHERE username=#{username}
+    </select>
+
+    <delete id="removeMyLike">
+        DELETE FROM tbl_mylike
+        WHERE postId IN
+        (SELECT postId FROM tbl_mylike
+         WHERE username=#{username}
+         GROUP BY postId
+         HAVING postId=#{postId});
+    </delete>
 </mapper>

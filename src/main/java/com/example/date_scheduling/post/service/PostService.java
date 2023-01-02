@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // 역할 : 컨트롤러와 저장소(repository) 사이의 잡일 처리 역할
 @Service
 @Slf4j
@@ -20,6 +23,7 @@ public class PostService {
     private final MyLikeRepository myLikeRepository;
 
     private final CategoryService categoryService;
+    private final MyLikeService myLikeService;
 
     //    리뷰 목록 조회 중간처리
     public FindAllPostDto findAllServ() {
@@ -89,14 +93,28 @@ public class PostService {
 
 
     ///////////////////////////////////////////
-    //좋아요 기능 (추가)
-    public boolean addLikeServ(String postId, String username){
-        return myLikeRepository.addLike(postId, username);
-    }
 
     // 마이라이크 페이지에서 좋아요한 리뷰 목록 조회 중간처리
-    public FindAllPostDto findAllMyLikesServ(String userId){
-        return new FindAllPostDto(repository.findAllMyReviews(userId));
+    public FindAllPostDto findAllMyLikesServ(String username){
+        List<String> postIds = myLikeService.findAllPostIdServ(username);
+        List<Post> mylikePosts = new ArrayList<>();
+
+        for(String postId : postIds){
+            Post post = repository.findOne(postId);
+            mylikePosts.add(post);
+        }
+        return new FindAllPostDto(mylikePosts);
+    }
+
+    //좋아요한 게시글 삭제 처리
+    public FindAllPostDto deleteMyLikeServ(String username, String postId){
+        boolean flag = myLikeRepository.removeMyLike(username, postId);
+
+        if (!flag){
+            log.warn("delete fail! not found id [{}]", postId);
+            throw new RuntimeException("delete fail!");
+        }
+        return findAllMyLikesServ(username);
     }
 
 }
