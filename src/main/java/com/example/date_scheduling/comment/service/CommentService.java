@@ -25,12 +25,12 @@ public class CommentService {
     }
 
     //해당하는 postid 안에서 댓글을 달기
-    public CommentEntity saveServ(CommentEntity commentEntity){
+    public List<CommentEntity> saveServ(CommentEntity commentEntity){
         if (commentEntity == null || commentEntity.getCommentid() == null){
             throw new RuntimeException("commentEntity에 문제가 있습니다.");
         }
         boolean save = repository.save(commentEntity);
-        return save ? showOneServ(commentEntity.getCommentid()) : null;
+        return save ? showServ(commentEntity.getPostid()) : null;
     }
 
     //댓글을 수정하기

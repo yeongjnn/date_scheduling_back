@@ -35,4 +35,9 @@ public class CommentEntity {
         this.userid=userid;
         this.content=content;
     }
+
+    public CommentEntity(String content){
+        this();
+        this.content = content;
+    }
 }

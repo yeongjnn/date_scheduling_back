@@ -33,14 +33,14 @@ public class CommentApiController {
     }
 
     @PostMapping("/{postId}") // /comment/{postId}
-    public ResponseEntity<?> save(@AuthenticationPrincipal String username, @PathVariable String postId, @RequestBody JustContent content){
+    public ResponseEntity<?> save(@AuthenticationPrincipal String username, @PathVariable String postId, @RequestBody CommentEntity commentEntity){
         try{
-            CommentEntity commentEntity = new CommentEntity();
+//            CommentEntity commentEntity = new CommentEntity();
 
         //지금은 임의로 설정한것임.
             commentEntity.setPostid(postId);
             commentEntity.setUserid(username);
-            commentEntity.setContent(content.getContent());
+            log.info("/api/comments/{} POST request - {}", postId, commentEntity);
             return ResponseEntity.ok().body(service.saveServ(commentEntity));
         }catch(RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
