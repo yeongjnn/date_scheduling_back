@@ -9,6 +9,7 @@ import com.example.date_scheduling.post.entity.Category;
 import com.example.date_scheduling.post.entity.Post;
 import com.example.date_scheduling.post.service.CategoryService;
 import com.example.date_scheduling.post.service.PostService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -111,7 +112,7 @@ public class PostApiController {
     //지역이랑 주소를 모두 선택한 다음 검색 버튼을 누르면 입력받은 카테고리에 해당하는 리뷰들을 불러온다
     @PostMapping("/search")
     public FindAllPostDto searchReviews(@RequestBody Category category){
-        log.info("/api/posts/search/{}/{} GET request", category);
+        log.info("/api/posts/search/{} GET request", category);
 
         if(category.getArea() == null || category.getAddress() == null){
             log.warn("{area} or {address} cannot be null");
@@ -180,4 +181,23 @@ public class PostApiController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /////////////////////////////////////////////////
+    // 게시글 좋아요 기능(추가)
+    @PostMapping("/{postId}")
+    public ResponseEntity<?> addLike(@PathVariable String postId, @AuthenticationPrincipal String username){
+        boolean flag = service.addLikeServ(postId, username);
+        log.info("{} 좋아요 추가 - {}", postId, username);
+        return ResponseEntity.ok().body(flag);
+    }
+
+    //좋아요한 게시글 조회
+    @GetMapping("/mylike")
+    public FindAllPostDto myLikes(@AuthenticationPrincipal String username){
+        log.info("/api/posts/mylike GET request!");
+
+        return service.findAllMyLikesServ(username);
+    }
+
+
 }

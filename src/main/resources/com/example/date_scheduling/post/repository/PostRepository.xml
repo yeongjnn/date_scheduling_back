@@ -30,6 +30,13 @@
         ORDER BY regDate
     </select>
 
+    <select id="findReviews" resultType="com.example.date_scheduling.post.entity.Post">
+        SELECT postId, userId, title, content, image, regDate, cID
+        FROM tbl_post
+        WHERE cID=#{cID}
+        ORDER BY regDate
+    </select>
+
     <select id="findOne" resultType="com.example.date_scheduling.post.entity.Post">
         SELECT postId, userId, title, content, image, regDate, cID
         FROM tbl_post
