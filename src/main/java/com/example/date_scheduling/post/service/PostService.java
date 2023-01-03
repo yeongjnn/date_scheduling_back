@@ -74,6 +74,20 @@ public class PostService {
         return dto != null ? dto : null;
     }
 
+    public RequestPostDto findOneMyPostServ(String postId, String username) {
+        Post post = repository.findOneMyPost(postId, username);
+        log.info("findOneServ return data - {}", post);
+
+        String cID = post.getCID();
+        Category category = categoryService.findCategoryByCIDServ(cID);
+
+        RequestPostDto dto = new RequestPostDto();
+        dto.setPost(post);
+        dto.setCategory(category);
+
+        return dto != null ? dto : null;
+    }
+
 
 
     public FindAllPostDto deleteServ(String postId, String userId) {
@@ -86,9 +100,14 @@ public class PostService {
         return findAllMyReviewsServ(userId);
     }
 
-    public FindAllPostDto update(Post post) {
-        boolean flag = repository.modify(post);
-        return flag ? findAllMyReviewsServ(post.getUserId()) : new FindAllPostDto();
+    public FindAllPostDto update(Post modifyPost, String modifyAddress) {
+        Category category = categoryService.findCategoryServ(modifyAddress);
+        String modifyCID = category.getCID();
+
+        modifyPost.setCID(modifyCID);
+
+        boolean flag = repository.modify(modifyPost);
+        return flag ? findAllMyReviewsServ(modifyPost.getUserId()) : new FindAllPostDto();
     }
 
 

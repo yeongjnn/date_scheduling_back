@@ -149,6 +149,19 @@ public class PostApiController {
         return service.findAllMyReviewsServ(username);
     }
 
+    // 내가 작성한 게시물 개별 조회 요청
+    @GetMapping("/mypost/{postId}")
+    public ResponseEntity<?> findOneMyPost(@PathVariable String postId, @AuthenticationPrincipal String username) {
+        log.info("/api/posts/mypost/{} GET request!", postId);
+
+        if (postId == null) return ResponseEntity.badRequest().build();
+
+        RequestPostDto postWithCategory = service.findOneMyPostServ(postId, username);
+
+        if (postWithCategory == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postWithCategory);
+    }
+
 
     // 게시물 삭제 요청
     @DeleteMapping("/mypost/{postId}")
@@ -165,19 +178,46 @@ public class PostApiController {
         }
     }
 
+//    //리뷰 등록 요청
+//    @PostMapping(value = "/new")
+//    public ResponseEntity<?> create(@AuthenticationPrincipal String username, @RequestBody RequestPostDto requestPostDto){
+//
+//        log.info("/api/posts/new POST request!", requestPostDto);
+//
+//        Post newPost = requestPostDto.getPost();
+//        Category category = requestPostDto.getCategory();
+//
+//        newPost.setUserId(username);
+//        log.info("/api/reviews POST request! - {}", newPost);
+//
+//        try{
+//            FindAllPostDto dto = service.createServ(newPost, category.getAddress());
+//
+//            if(dto == null){
+//                return ResponseEntity.notFound().build();
+//            }
+//            return ResponseEntity.ok().body(dto);
+//        }catch (RuntimeException e){
+//            return ResponseEntity.badRequest().body((e.getMessage()));
+//        }
+//    }
+
     // 게시물 수정 요청
     @PutMapping("/mypost/{postId}")
-    public ResponseEntity<?> update(@RequestBody Post post, @PathVariable String postId, @AuthenticationPrincipal String username) {
+    public ResponseEntity<?> update(@RequestBody RequestPostDto requestPostDto, @PathVariable String postId, @AuthenticationPrincipal String username) {
 //        post.setUserId(username);
-        post.setPostId(postId);
-        String nickByPostId = service.findOneServ(postId).getPost().getUserId();
-        if(!nickByPostId.equalsIgnoreCase(username)) return ResponseEntity.badRequest().body(new ErrorDTO("접근권한이 없습니다-username 불일치"));
-        post.setUserId(nickByPostId);
 
-        log.info("/api/posts PUT request!", post);
+        String nickByPostId = service.findOneMyPostServ(postId, username).getPost().getUserId();
+        if(!nickByPostId.equalsIgnoreCase(requestPostDto.getPost().getUserId())) return ResponseEntity.badRequest().body(new ErrorDTO("접근권한이 없습니다-username 불일치"));
+
+        Post modifyPost = requestPostDto.getPost();
+        Category modifyCategory = requestPostDto.getCategory();
+
+        log.info("/api/posts PUT request! Post-{} / Category-{}", modifyPost, modifyCategory);
 
         try {
-            FindAllPostDto dtos = service.update(post);
+
+            FindAllPostDto dtos = service.update(modifyPost, modifyCategory.getAddress());
             return ResponseEntity.ok().body(dtos);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
