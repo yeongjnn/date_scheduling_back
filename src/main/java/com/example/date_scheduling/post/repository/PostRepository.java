@@ -31,6 +31,9 @@ public interface PostRepository {
     // 게시물 개별 조회 기능
     Post findOne(String postId);
 
+    // 내가 작성한 게시물 개별 조회
+    Post findOneMyPost(String postId, String userId);
+
     // 게시물 삭제 기능
     boolean remove(String postId);
 

@@ -43,6 +43,11 @@
         WHERE postId=#{postId}
     </select>
 
+    <select id="findOneMyPost" resultType="com.example.date_scheduling.post.entity.Post">
+        SELECT postId, userId, title, content, image, regDate, cID
+        FROM tbl_post
+        WHERE postId=#{postId} AND userId=#{userId}
+    </select>
 
     <update id="modify">
         UPDATE tbl_post

@@ -74,6 +74,20 @@ public class PostService {
         return dto != null ? dto : null;
     }
 
+    public RequestPostDto findOneMyPostServ(String postId, String username) {
+        Post post = repository.findOneMyPost(postId, username);
+        log.info("findOneServ return data - {}", post);
+
+        String cID = post.getCID();
+        Category category = categoryService.findCategoryByCIDServ(cID);
+
+        RequestPostDto dto = new RequestPostDto();
+        dto.setPost(post);
+        dto.setCategory(category);
+
+        return dto != null ? dto : null;
+    }
+
 
 
     public FindAllPostDto deleteServ(String postId, String userId) {

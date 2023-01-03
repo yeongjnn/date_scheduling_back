@@ -65,6 +65,12 @@ public class CommentApiController {
 
     @DeleteMapping
     public ResponseEntity<?> delete(@AuthenticationPrincipal String username,@RequestBody CommentEntity commentEntity){
+        String commentUser = commentEntity.getUserid();
+        if(commentUser.equals(username)){
+            log.info("로그인한 계정이름과 삭제 요청한 계정이름이 동일하다 - 삭제 가능");
+            commentEntity.setUserid(username);
+        }else log.info("삭제 권한이 없습니다");
+
         try{
             FindAllCommentDTO commentEntities = service.deleteServ(commentEntity.getPostid(), commentEntity.getCommentid());
             log.info("/api/comments DELETE request -{}", commentEntity.getCommentid());

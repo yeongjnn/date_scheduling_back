@@ -149,6 +149,19 @@ public class PostApiController {
         return service.findAllMyReviewsServ(username);
     }
 
+    // 내가 작성한 게시물 개별 조회 요청
+    @GetMapping("/mypost/{postId}")
+    public ResponseEntity<?> findOneMyPost(@PathVariable String postId, @AuthenticationPrincipal String username) {
+        log.info("/api/posts/mypost/{} GET request!", postId);
+
+        if (postId == null) return ResponseEntity.badRequest().build();
+
+        RequestPostDto postWithCategory = service.findOneMyPostServ(postId, username);
+
+        if (postWithCategory == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(postWithCategory);
+    }
+
 
     // 게시물 삭제 요청
     @DeleteMapping("/mypost/{postId}")
