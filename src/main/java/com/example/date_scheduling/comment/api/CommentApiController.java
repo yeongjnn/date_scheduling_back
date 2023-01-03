@@ -1,5 +1,6 @@
 package com.example.date_scheduling.comment.api;
 
+import com.example.date_scheduling.comment.dto.FindAllCommentDTO;
 import com.example.date_scheduling.comment.dto.JustContent;
 import com.example.date_scheduling.comment.dto.PostandCommentid;
 import com.example.date_scheduling.comment.entity.CommentEntity;
@@ -22,9 +23,9 @@ public class CommentApiController {
     private final CommentService service;
 
     @GetMapping("/{postid}")
-    public ResponseEntity<?> show(@PathVariable String postid){
+    public FindAllCommentDTO show(@PathVariable String postid){
         log.info("GET MAPPING - COMMENTENTITY {}",postid);
-        return ResponseEntity.ok().body(service.showServ(postid));
+        return service.showServ(postid);
     }
 
     @GetMapping("/comment/{commentid}") //
@@ -63,10 +64,10 @@ public class CommentApiController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> delete(@AuthenticationPrincipal String username,@RequestBody PostandCommentid postandCommentid){
+    public ResponseEntity<?> delete(@AuthenticationPrincipal String username,@RequestBody CommentEntity commentEntity){
         try{
-            List<CommentEntity> commentEntities = service.deleteServ(postandCommentid.getPostid(), postandCommentid.getCommentid());
-            log.info("/api/comments DELETE request -{}", postandCommentid.getCommentid());
+            FindAllCommentDTO commentEntities = service.deleteServ(commentEntity.getPostid(), commentEntity.getCommentid());
+            log.info("/api/comments DELETE request -{}", commentEntity.getCommentid());
             return ResponseEntity.ok().body(commentEntities);
         }catch(RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());

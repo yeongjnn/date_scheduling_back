@@ -1,5 +1,6 @@
 package com.example.date_scheduling.comment.service;
 
+import com.example.date_scheduling.comment.dto.FindAllCommentDTO;
 import com.example.date_scheduling.comment.entity.CommentEntity;
 import com.example.date_scheduling.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,8 @@ public class CommentService {
     private final CommentRepository repository;
 
     //postid와 일치하는 모든 코멘트들을 보여주기
-    public List<CommentEntity> showServ(String postid){
-        return repository.show(postid);
+    public FindAllCommentDTO showServ(String postid){
+        return new FindAllCommentDTO(repository.show(postid));
     }
 
     //commentid와 일치하는 하나의 코멘트를 보여주기
@@ -25,7 +26,7 @@ public class CommentService {
     }
 
     //해당하는 postid 안에서 댓글을 달기
-    public List<CommentEntity> saveServ(CommentEntity commentEntity){
+    public FindAllCommentDTO saveServ(CommentEntity commentEntity){
         if (commentEntity == null || commentEntity.getCommentid() == null){
             throw new RuntimeException("commentEntity에 문제가 있습니다.");
         }
@@ -43,7 +44,7 @@ public class CommentService {
     }
 
     //댓글 삭제하기
-    public List<CommentEntity> deleteServ(String postid, String commentid){
+    public FindAllCommentDTO deleteServ(String postid, String commentid){
         boolean flag = repository.delete(commentid);
 
         if (!flag){
