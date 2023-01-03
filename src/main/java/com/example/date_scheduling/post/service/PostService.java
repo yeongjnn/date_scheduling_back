@@ -100,9 +100,14 @@ public class PostService {
         return findAllMyReviewsServ(userId);
     }
 
-    public FindAllPostDto update(Post post) {
-        boolean flag = repository.modify(post);
-        return flag ? findAllMyReviewsServ(post.getUserId()) : new FindAllPostDto();
+    public FindAllPostDto update(Post modifyPost, String modifyAddress) {
+        Category category = categoryService.findCategoryServ(modifyAddress);
+        String modifyCID = category.getCID();
+
+        modifyPost.setCID(modifyCID);
+
+        boolean flag = repository.modify(modifyPost);
+        return flag ? findAllMyReviewsServ(modifyPost.getUserId()) : new FindAllPostDto();
     }
 
 

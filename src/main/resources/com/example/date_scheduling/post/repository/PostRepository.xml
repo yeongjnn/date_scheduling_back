@@ -51,7 +51,7 @@
 
     <update id="modify">
         UPDATE tbl_post
-        SET title=#{title}, content=#{content}, image=#{image}
+        SET title=#{title}, content=#{content}, image=#{image}, cID=#{cID}
         WHERE postId=#{postId}
     </update>
 
