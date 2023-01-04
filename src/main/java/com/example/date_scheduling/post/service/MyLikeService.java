@@ -19,11 +19,13 @@ public class MyLikeService {
 
     //좋아요 기능 (추가)
     public boolean addLikeServ(String postId, String username){
+
         return myLikeRepository.addLike(postId, username);
     }
 
     //좋아요한 게시글 아이디 조회 처리
     public List<String> findAllPostIdServ(String username){
+
         return myLikeRepository.findAllPostId(username);
     }
 
