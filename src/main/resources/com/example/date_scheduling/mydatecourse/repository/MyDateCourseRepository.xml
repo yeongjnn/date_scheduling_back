@@ -17,10 +17,10 @@
         WHERE courseId=#{courseId}
     </delete>
 
-    <select id="findAll" resultType="com.example.date_scheduling.mydatecourse.entity.MyDateCourse">
+    <select id="findAllMyCourse" resultType="com.example.date_scheduling.mydatecourse.entity.MyDateCourse">
         SELECT courseId, postId, username, meetingDate, regDate
         FROM tbl_mydatecourse
-        ORDER BY meetingDate
+        WHERE username=#{username}
     </select>
 
     <select id="findOne" resultType="com.example.date_scheduling.mydatecourse.entity.MyDateCourse">

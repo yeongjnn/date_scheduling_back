@@ -3,6 +3,7 @@ package com.example.date_scheduling.mydatecourse.repository;
 import com.example.date_scheduling.mydatecourse.entity.MyDateCourse;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -15,10 +16,10 @@ public interface MyDateCourseRepository {
 
 
     ////// <마이 페이지> ///////
-    // 전체 데이트 코스 목록 조회 기능
-    List<MyDateCourse> findAll();
+    // 사용자의 전체 데이트 코스 목록 조회 기능
+    List<MyDateCourse> findAllMyCourse(String username);
 
-    // 데이트 코스 개별 조회 기능
+    // 데이트 코스 조회 요청 (courseId 기준)
     MyDateCourse findOne(String courseId);
 
     // 데이트 코스 수정 기능

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @Slf4j  // 로깅을 위해
 @RequestMapping("/api/mycourses")
@@ -19,16 +21,16 @@ public class MyCourseApiController {
 
     private final MyCourseService service;
 
-    // 데이트 코스 목록 전체 조회 요청
-    // 캘린더에서 날짜를 클릭하면 해당 날짜의 데이트 목록만 조회됨
+    // User 의 데이트 코스 목록 전체 조회 요청
     @GetMapping
     // 토큰 인증 필요
+    // 인증된 사용자의 리스트만 조회됨
     public ResponseEntity<?> myCourseList(@AuthenticationPrincipal String username) {
         log.info("/api/mycourses GET request!");
-        return ResponseEntity.ok().body(service.findAllServ());
+        return ResponseEntity.ok().body(service.findAllServ(username));
     }
 
-    // 데이트 코스 개별 조회 요청
+    // 데이트 코스 개별 조회 요청 (courseId 기준)
     @GetMapping("/{courseId}")
     public ResponseEntity<?> findOneCourse(@PathVariable String courseId) {
         log.info("/api/mycourses GET request!", courseId);
@@ -44,7 +46,9 @@ public class MyCourseApiController {
 
     // 데이트 코스 등록 요청
     @PostMapping
-    public ResponseEntity<?> registerCourse(@RequestBody MyDateCourse newCourse) {
+    public ResponseEntity<?> registerCourse(@AuthenticationPrincipal String username, @RequestBody MyDateCourse newCourse) {
+
+        newCourse.setUsername(username);
 
         log.info("/api/mycourses POST request! - {}", newCourse);
 
@@ -62,7 +66,9 @@ public class MyCourseApiController {
 
     // 데이트 코스 수정 요청
     @PutMapping
-    public ResponseEntity<?> updateCourse(@RequestBody MyDateCourse myDateCourse) {
+    public ResponseEntity<?> updateCourse(@AuthenticationPrincipal String username, @RequestBody MyDateCourse myDateCourse) {
+
+        myDateCourse.setUsername(username);
 
         log.info("/api/mycourses PUT request!", myDateCourse);
 
@@ -76,7 +82,9 @@ public class MyCourseApiController {
 
     // 데이트 코스 삭제 요청
     @DeleteMapping("/{courseId}")
-    public ResponseEntity<?> deleteCourse (@PathVariable String courseId) {
+    public ResponseEntity<?> deleteCourse (@AuthenticationPrincipal String username, @PathVariable String courseId, @RequestBody MyDateCourse myDateCourse) {
+
+        myDateCourse.setUsername(username);
 
         log. info("/api/mycourses/{} DELETE request!", courseId);
 

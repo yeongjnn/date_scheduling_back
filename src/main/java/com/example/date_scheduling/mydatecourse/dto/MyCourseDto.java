@@ -12,17 +12,20 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-// 민감한 정보 빼고 공개 가능한 데이터
-// postId 로 게시물 데이터 접근해서 (일단) title만 보여지게끔
 public class MyCourseDto {
 
-    private String username;    // 등록한 사람 닉네임
-    private Date meetingDate;   // 데이트하기로 한 날짜
-    private Date regDate;       // 코스로 최초 등록한 날짜
+//    private String username;
+    private String courseId;
+    private String postId;
+    private Date meetingDate;
+    private Date regDate;
 
     // MyDateCourse에서 MyCourseDto가 필요한 필드를 빼오는 생성자
     public MyCourseDto(MyDateCourse myDateCourse) {
-        this.username = myDateCourse.getUsername();
+//        this.username = myDateCourse.getUsername();
+        this.courseId = myDateCourse.getCourseId();
+        this.postId = myDateCourse.getPostId();
         this.meetingDate = myDateCourse.getMeetingDate();
+        this.regDate = myDateCourse.getRegDate();
     }
 }

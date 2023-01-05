@@ -15,6 +15,8 @@ import java.util.List;
 public class FindAllCourseDto {
 
     private int count;  // 전체 데이트 코스 목록 갯수
+
+    // username이 빠진 MyDateCourse 목록
     private List<MyCourseDto> myCourseDtos;
 
     public FindAllCourseDto(List<MyDateCourse> courseList) {
@@ -27,7 +29,7 @@ public class FindAllCourseDto {
         List<MyCourseDto> dtos = new ArrayList<>();
 
         for(MyDateCourse myDateCourse : courseList) {
-            dtos.add(new MyCourseDto());
+            dtos.add(new MyCourseDto(myDateCourse));
         }
         this.myCourseDtos = dtos;
     }
